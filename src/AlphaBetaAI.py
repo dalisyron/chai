@@ -1,6 +1,8 @@
 import chess
 from math import inf
 
+from MinimaxAI import weighted_points_evaluation_function, piece_table_evaluation_function
+
 value_dict = {
     'p': 1,
     'n': 3,
@@ -12,15 +14,7 @@ value_dict = {
 }
 
 def evaluation_function(board):
-
-    result = 0
-
-    for file in range(8):
-        for rank in range(8):
-            piece = board.piece_at(chess.square(file, rank))
-            result += value_dict[piece.__str__().lower()]
-
-    return result
+    return weighted_points_evaluation_function(board) + piece_table_evaluation_function(board)
 
 INF = 100000000000
 

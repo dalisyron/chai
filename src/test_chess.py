@@ -2,8 +2,6 @@
 
 
 import chess
-from RandomAI import RandomAI
-from HumanPlayer import HumanPlayer
 from MinimaxAI import MinimaxAI
 from AlphaBetaAI import AlphaBetaAI
 from ChessGame import ChessGame
@@ -11,8 +9,8 @@ from ChessGame import ChessGame
 
 import sys
 
-player1 = MinimaxAI(chess.WHITE, 2)
-player2 = MinimaxAI(chess.BLACK, 2)
+player1 = AlphaBetaAI(chess.WHITE, 3)
+player2 = AlphaBetaAI(chess.BLACK, 3)
 
 game = ChessGame(player1, player2)
 

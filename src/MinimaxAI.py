@@ -1,5 +1,7 @@
 import chess
 
+from PieceSquareTables import pst
+
 value_dict = {
     'p': 1,
     'n': 3,
@@ -10,16 +12,49 @@ value_dict = {
     'none': 0,
 }
 
+types = ['p', 'n', 'b', 'r', 'q', 'k']
+piece_mapper = {
+    'p' : chess.PAWN,
+    'n' : chess.KNIGHT,
+    'b' : chess.BISHOP,
+    'r' : chess.ROOK,
+    'q' : chess.QUEEN,
+    'k' : chess.KING
+}
+
+def piece_diff(board, piece_type):
+    return len(board.pieces(piece_type, chess.WHITE)) - len(board.pieces(piece_type, chess.BLACK))
+
+def piece_table_evaluation_function(board):
+    difference = 0
+
+    for p in types:
+        for piece in board.pieces(piece_mapper[p], chess.WHITE):
+            difference += pst[p][piece]
+        for piece in board.pieces(piece_mapper[p], chess.BLACK):
+            difference -= pst[p][chess.square_mirror(piece)]
+
+    if (board.turn):
+        difference *= -1
+
+    return difference
+
+def weighted_points_evaluation_function(board: chess.Board):
+    difference = 0
+
+    difference += piece_diff(board, chess.PAWN) * 100.0
+    difference += piece_diff(board, chess.KNIGHT) * 300.0
+    difference += piece_diff(board, chess.BISHOP) * 300.0
+    difference += piece_diff(board, chess.ROOK) * 500.0
+    difference += piece_diff(board, chess.QUEEN) * 900.0
+
+    if (board.turn):
+        difference *= -1
+
+    return difference
+
 def evaluation_function(board):
-
-    result = 0
-
-    for file in range(8):
-        for rank in range(8):
-            piece = board.piece_at(chess.square(file, rank))
-            result += value_dict[piece.__str__().lower()]
-
-    return result
+    return weighted_points_evaluation_function(board) + piece_table_evaluation_function(board)
 
 INF = 100000000000
 

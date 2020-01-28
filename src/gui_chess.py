@@ -6,6 +6,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QApplication, QWidget
 import sys
 import chess, chess.svg
+
+from AlphaBetaAI import AlphaBetaAI
 from RandomAI import RandomAI
 from MinimaxAI import MinimaxAI
 from ChessGame import ChessGame
@@ -61,7 +63,7 @@ if __name__ == "__main__":
     # to do: gui does not work well with HumanPlayer, due to input() use on stdin conflict
     #   with event loop.
 
-    player1 = RandomAI()
+    player1 = AlphaBetaAI(chess.WHITE, 4)
     player2 = RandomAI()
 
     game = ChessGame(player1, player2)
